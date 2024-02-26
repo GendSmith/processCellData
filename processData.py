@@ -2,16 +2,18 @@ from scipy import signal
 import numpy as np
 import matplotlib.pyplot as plt
 
+# 清洗数据
 def clean_data(data):
     clean_data = clean_data_with_zero(data)
     return clean_data
 
+# 清洗数据，过滤掉小于0的数据
 def clean_data_with_zero(data):
     copyData = np.copy(data)
     copyData[copyData < 0] = 0
     return copyData
 
-
+# 清洗数据，使用3倍标准差过滤掉异常值
 def clean_data_with_threee_sigma(data):
     copyData = np.copy(data)
     mean = np.mean(copyData)
@@ -23,6 +25,7 @@ def clean_data_with_threee_sigma(data):
     data_cleaned[(data_cleaned > upper) | (data_cleaned < lower)] = 0
     return data_cleaned
 
+# 寻找波峰波谷
 def find_peaks_and_valleys(data_x,data_y, threshold=0.2, order=4):
     # Find peaks
     # order:两侧使用多少点进行比较
@@ -72,7 +75,7 @@ def find_peaks_and_valleys(data_x,data_y, threshold=0.2, order=4):
     #print('Valleys:', valley_indexes)
     return peak_indexes, valley_indexes
 
-
+# 找到所有的峰值，和它对应的前置谷值
 def find_valley_before_peak_rt(peaks, valleys,rt):
     valleyPeakTuple = []
     for peak in peaks:
